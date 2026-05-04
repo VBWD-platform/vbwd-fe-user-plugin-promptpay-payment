@@ -1,13 +1,29 @@
 <template>
   <div class="promptpay">
-    <div v-if="loading">{{ $t('promptpay.loading') }}</div>
-    <div v-else-if="error" class="error">{{ error }}</div>
+    <div v-if="loading">
+      {{ $t('promptpay.loading') }}
+    </div>
+    <div
+      v-else-if="error"
+      class="error"
+    >
+      {{ error }}
+    </div>
     <div v-else-if="payment">
       <h2>{{ $t('promptpay.scan') }}</h2>
-      <div class="qr-payload">{{ payment.qr_payload }}</div>
+      <div class="qr-payload">
+        {{ payment.qr_payload }}
+      </div>
       <p>{{ payment.amount }} {{ payment.currency }}</p>
-      <p class="ref">{{ $t('promptpay.ref') }}: {{ payment.reference }}</p>
-      <p v-if="status" class="status">{{ status }}</p>
+      <p class="ref">
+        {{ $t('promptpay.ref') }}: {{ payment.reference }}
+      </p>
+      <p
+        v-if="status"
+        class="status"
+      >
+        {{ status }}
+      </p>
     </div>
   </div>
 </template>
