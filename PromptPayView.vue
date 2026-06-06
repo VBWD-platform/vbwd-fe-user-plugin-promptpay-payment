@@ -53,7 +53,7 @@ async function issue() {
   const invoiceNo = (route.query.invoice as string) || '';
   const amount = route.query.amount;
   try {
-    const resp = await api.post('/api/v1/plugins/promptpay/payments', {
+    const resp = await api.post<Response>('/api/v1/plugins/promptpay/payments', {
       invoice_no: invoiceNo,
       amount,
     });
@@ -68,7 +68,7 @@ async function issue() {
 
 function startPolling(invoiceNo: string) {
   timer = setInterval(async () => {
-    const resp = await api.get(`/api/v1/plugins/promptpay/payments/${invoiceNo}/status`);
+    const resp = await api.get<Response>(`/api/v1/plugins/promptpay/payments/${invoiceNo}/status`);
     const body = await resp.json();
     status.value = body.status;
     if (body.status === 'completed') {
