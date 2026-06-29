@@ -4,7 +4,7 @@ import th from './locales/th.json';
 
 export const promptPayPaymentPlugin: IPlugin = {
   name: 'promptpay-payment',
-  version: '26.6',
+  version: '26.6.1',
   description: 'PromptPay direct QR (Thailand) — scan to pay, bank webhook confirms',
   _active: false,
 
