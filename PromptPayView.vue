@@ -41,6 +41,13 @@ interface Payment {
   status: string;
 }
 
+interface PaymentStatus {
+  status: string;
+}
+
+// Relative to the api client's `/api/v1` baseURL.
+const API_PREFIX = '/plugins/promptpay';
+
 const route = useRoute();
 const router = useRouter();
 const loading = ref(true);
@@ -53,11 +60,10 @@ async function issue() {
   const invoiceNo = (route.query.invoice as string) || '';
   const amount = route.query.amount;
   try {
-    const resp = await api.post<Response>('/api/v1/plugins/promptpay/payments', {
+    payment.value = await api.post<Payment>(`${API_PREFIX}/payments`, {
       invoice_no: invoiceNo,
       amount,
     });
-    payment.value = await resp.json();
     startPolling(invoiceNo);
   } catch (e) {
     error.value = e instanceof Error ? e.message : 'failed';
@@ -68,8 +74,7 @@ async function issue() {
 
 function startPolling(invoiceNo: string) {
   timer = setInterval(async () => {
-    const resp = await api.get<Response>(`/api/v1/plugins/promptpay/payments/${invoiceNo}/status`);
-    const body = await resp.json();
+    const body = await api.get<PaymentStatus>(`${API_PREFIX}/payments/${invoiceNo}/status`);
     status.value = body.status;
     if (body.status === 'completed') {
       stopPolling();
